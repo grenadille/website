@@ -1,0 +1,33 @@
+{
+  "name": "@grenadille/website",
+  "version": "1.0.0",
+  "description": "Grenadille landing page",
+  "repository": "git://github.com/grenadille/website.git",
+  "license": "MIT",
+  "author": {
+    "name": "Grenadille"
+  },
+  "bugs": {
+    "url": "https://github.com/grenadille/website/issues",
+    "email": "admin@grenadille.app"
+  },
+  "commits": {
+    "url": "https://github.com/grenadille/website/commits"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/grenadille"
+  },
+  "source": ["src/index.html"],
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "engines": {
+    "node": ">= 16"
+  },
+  "scripts": {
+    "start": "parcel 'src/index.html' --lazy --open",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.3",
+    "parcel": "^2.8.3"
+  }
+}

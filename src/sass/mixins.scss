@@ -1,0 +1,25 @@
+@import 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Nunito:wght@400;700&display=swap');
+
+@mixin title() {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+}
+
+@mixin text($bold: false) {
+  font-family: 'Nunito', sans-serif;
+  @if $bold {
+    font-weight: 700;
+  } @else {
+    font-weight: 400;
+  }
+}
+
+@mixin button() {
+  @include title();
+  display: inline-block;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  margin-top: 2rem;
+}
