@@ -2,25 +2,50 @@
 
 body {
   @include text();
-  font-size: 1.4rem;
+  font-size: $font-size-default;
   text-align: center;
   margin: 0;
+  min-width: $window-min-width;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 2rem;
+  max-width: $container-max-width;
 }
 
 header {
-  padding: 1rem 2rem;
+  .brand {
+    transition: 1s;
 
-  h1 {
-    @include title();
-    color: $color-primary;
-    font-size: 6rem;
-    margin-bottom: 0;
-  }
+    h1 {
+      @include title();
+      color: $color-primary;
+      font-size: $font-size-3xl;
+      margin-bottom: 0;
+    }
 
-  h2 {
-    @include title();
-    color: $color-secondary;
-    font-size: 1.4rem;
+    h2 {
+      @include title();
+      color: $color-secondary;
+      font-size: $font-size-default;
+      margin-top: 0;
+      margin-bottom: 4rem;
+    }
+
+    &:hover {
+      cursor: grab;
+      mix-blend-mode: normal;
+      filter: drop-shadow(0px 1rem 2rem rgba(0, 0, 0, 0.25));
+
+      h1 {
+        color: $color-secondary;
+      }
+
+      h2 {
+        color: $color-primary;
+      }
+    }
   }
 }
 
@@ -55,32 +80,44 @@ a {
   }
 }
 
+.button-wrapper {
+  @include button-wrapper();
+  color: $color-white;
+
+  a.primary {
+    background: $color-primary;
+  }
+  a.secondary {
+    background: $color-secondary;
+  }
+}
+
 .panel {
   color: $color-white;
   border-radius: 1rem;
-  padding: 2rem 1rem;
+  padding: 1rem 2rem;
   margin: 4rem auto;
   width: 50%;
+  max-width: 500px;
 
   &.primary {
-    padding-bottom: 20rem;
     background: $color-primary url(../assets/img/panel1.png) bottom no-repeat;
     background-size: contain;
+    padding-bottom: 400px;
   }
   &.secondary {
-    padding-bottom: 20rem;
     background: $color-secondary url(../assets/img/panel2.png) bottom no-repeat;
     background-size: contain;
+    padding-bottom: 400px;
   }
 }
 
 .content {
-  width: 80%;
-  margin: 4rem auto;
+  padding: 4rem 0;
 
   h3 {
     @include title();
-    font-size: 2rem;
+    font-size: $font-size-xl;
     color: $color-primary;
   }
 
@@ -95,17 +132,19 @@ a {
 
 .team {
   background: lightgray;
-  padding: 2rem 0;
+  padding: 4rem 0;
 
   h3 {
     @include title();
-    font-size: 2rem;
+    font-size: $font-size-xl;
     color: $color-primary;
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    max-width: 1000px;
+    margin: 0 auto;
 
     .member {
       .profile {
@@ -131,7 +170,7 @@ a {
 
       h4 {
         @include title();
-        font-size: 1.6rem;
+        font-size: $font-size-md;
         color: $color-secondary;
       }
     }
@@ -139,13 +178,13 @@ a {
 }
 
 .legal-mentions {
-  font-size: 1rem;
+  font-size: $font-size-xs;
   text-align: left;
-  padding: 2rem 4rem;
+  padding: 4rem 0;
 
   h3 {
     @include title();
-    font-size: 2rem;
+    font-size: $font-size-xl;
     color: $color-black;
   }
 
@@ -155,7 +194,7 @@ a {
 
     h4 {
       @include title();
-      font-size: 1.4rem;
+      font-size: $font-size-default;
       color: $color-black;
     }
 
@@ -166,51 +205,135 @@ a {
         text-decoration: none;
       }
     }
+
+    .grid-row-2 {
+      grid-row: span 2;
+    }
+
+    .grid-col-2 {
+      grid-column: span 2;
+    }
   }
 }
 
 footer {
   background: $color-primary;
   @include title();
-  font-size: 2rem;
+  font-size: $font-size-xl;
   color: $color-white;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 2rem 4rem;
+  padding: 2rem 0;
 
-  strong {
-    color: $color-black;
-  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
 
-  span {
-    display: block;
-  }
-
-  div {
-    &:first-child {
-      text-align: left;
-    }
-    &:last-child {
-      text-align: right;
+    strong {
+      color: $color-black;
     }
 
-    a {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: flex-end;
-      align-items: center;
-      @include text();
-      font-size: 1.2rem;
+    span {
+      display: block;
+    }
 
-      &::before {
-        display: inline-block;
-        margin-right: 0.5rem;
-        content: "";
-        width: 2rem;
-        height: 2rem;
-        background: url("../assets/img/email.svg") no-repeat;
-        background-size: contain;
+    div {
+      &:first-child {
+        text-align: left;
+      }
+
+      &:last-child {
+        text-align: right;
+
+        a {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: flex-end;
+          align-items: center;
+          @include text();
+          font-size: $font-size-sm;
+
+          &::before {
+            display: inline-block;
+            margin-right: 0.5rem;
+            content: "";
+            width: 2rem;
+            height: 2rem;
+            background: url("../assets/img/email.svg") no-repeat;
+            background-size: contain;
+          }
+        }
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .panel {
+    width: 60%;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .panel {
+    width: 70%;
+  }
+
+  .legal-mentions {
+    padding: 1rem 0;
+
+    .grid {
+      grid-template-columns: 1fr;
+
+      .grid-row-2 {
+        grid-row: span 1;
+      }
+
+      .grid-col-2 {
+        grid-column: span 1;
+      }
+    }
+  }
+
+  .team {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  footer {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1rem 0;
+
+      div {
+        text-align: center !important;
+
+        &:last-child {
+          a {
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 512px) {
+  header {
+    .brand {
+      h1 {
+        font-size: $font-size-2xl;
+      }
+    }
+  }
+
+  .panel {
+    width: 80%;
   }
 }
