@@ -38,6 +38,11 @@ header {
       mix-blend-mode: normal;
       filter: drop-shadow(0px 1rem 2rem rgba(0, 0, 0, 0.25));
 
+      &:is(a) {
+        cursor: pointer;
+        text-decoration: none;
+      }
+
       h1 {
         color: $color-secondary;
       }
@@ -131,7 +136,6 @@ a {
 }
 
 .team {
-  background: lightgray;
   padding: 4rem 0;
 
   h3 {
@@ -142,9 +146,10 @@ a {
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     max-width: 1000px;
     margin: 0 auto;
+    padding: 4rem 0;
 
     .member {
       .profile {
@@ -162,6 +167,10 @@ a {
           background: $color-black url(../assets/img/equipe/aurelie.png) no-repeat;
           background-size: contain;
         }
+        &.lucien {
+          background: $color-black url(../assets/img/equipe/lucien.png) no-repeat;
+          background-size: contain;
+        }
         &.vincent {
           background: $color-black url(../assets/img/equipe/vincent.png) no-repeat;
           background-size: contain;
@@ -177,20 +186,20 @@ a {
   }
 }
 
-.legal-mentions {
+.legal-notices {
   font-size: $font-size-xs;
-  text-align: left;
   padding: 4rem 0;
 
   h3 {
     @include title();
     font-size: $font-size-xl;
-    color: $color-black;
+    color: $color-primary;
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    text-align: left;
 
     h4 {
       @include title();
@@ -229,7 +238,7 @@ footer {
     align-items: center;
 
     strong {
-      color: $color-black;
+      color: $color-third;
     }
 
     span {
@@ -252,7 +261,7 @@ footer {
           @include text();
           font-size: $font-size-sm;
 
-          &::before {
+          &.mail::before {
             display: inline-block;
             margin-right: 0.5rem;
             content: "";
@@ -271,6 +280,13 @@ footer {
   .panel {
     width: 60%;
   }
+
+  .team {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
 }
 
 @media (max-width: 640px) {
@@ -282,7 +298,7 @@ footer {
     width: 70%;
   }
 
-  .legal-mentions {
+  .legal-notices {
     padding: 1rem 0;
 
     .grid {

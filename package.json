@@ -17,17 +17,23 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/grenadille"
   },
-  "source": ["src/index.html"],
+  "source": [
+    "src/index.html"
+  ],
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "engines": {
     "node": ">= 16"
   },
   "scripts": {
-    "start": "parcel 'src/index.html' --lazy --open",
-    "build": "parcel build"
+    "start": "parcel 'src/*.html' --lazy --open",
+    "build": "npm run build:clean && npm run build:dist",
+    "build:dist": "parcel build && cp -fv src/robots.txt dist/",
+    "build:clean": "rm -Rf dist .parcel-cache"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.8.3",
     "@parcel/transformer-sass": "^2.8.3",
+    "@parcel/transformer-webmanifest": "^2.8.3",
     "parcel": "^2.8.3"
   }
 }

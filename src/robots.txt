@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /
+# Assets
+Allow: /site.webmanifest$
+Allow: /*.ico$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.svg$
+# Home
+Allow: /$
+Allow: /index.html$

@@ -4,13 +4,13 @@ This project use [Parcel](https://parceljs.org/) to compile SASS and JS.
 
 https://github.com/parcel-bundler/parcel
 
-## Compilation
+## Compilation (to deploy)
 
 ```
-npm build
+npm run build
 ```
 
-## Start and test with Parcel
+## Start and test with Parcel in your browser
 
 ```
 npm start
