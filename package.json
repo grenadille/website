@@ -27,7 +27,7 @@
   "scripts": {
     "start": "parcel 'src/*.html' --lazy --open",
     "build": "npm run build:clean && npm run build:dist",
-    "build:dist": "parcel build && cp -fv src/robots.txt dist/ && cp -fv src/assets/img/logo.png dist/logo-grenadille.png",
+    "build:dist": "parcel build && cp -fv src/robots.txt src/favicon.ico dist/ && cp -fv src/assets/img/logo.png dist/logo-grenadille.png",
     "build:clean": "rm -Rf dist .parcel-cache"
   },
   "devDependencies": {
