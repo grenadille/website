@@ -248,28 +248,51 @@ footer {
     div {
       &:first-child {
         text-align: left;
+
+        a {
+          justify-content: flex-start;
+
+          &:first-of-type {
+            margin-top: 1rem;
+          }
+        }
       }
 
       &:last-child {
         text-align: right;
 
         a {
-          display: flex;
-          flex-flow: row nowrap;
           justify-content: flex-end;
-          align-items: center;
-          @include text();
-          font-size: $font-size-sm;
 
-          &.mail::before {
-            display: inline-block;
-            margin-right: 0.5rem;
-            content: "";
-            width: 2rem;
-            height: 2rem;
-            background: url("../assets/img/email.svg") no-repeat;
-            background-size: contain;
+          &:last-of-type {
+            margin-top: 1rem;
           }
+        }
+      }
+
+      a {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        @include text();
+        font-size: $font-size-sm;
+
+        &.icon::before {
+          display: inline-block;
+          margin-right: 0.5rem;
+          content: "";
+          width: 2rem;
+          height: 2rem;
+          background-size: contain;
+        }
+        &.mail::before {
+          background: url("../assets/img/email.svg") no-repeat;
+        }
+        &.facebook::before {
+          background: url("../assets/img/facebook.svg") no-repeat;
+        }
+        &.instagram::before {
+          background: url("../assets/img/instagram.svg") no-repeat;
         }
       }
     }
@@ -330,10 +353,8 @@ footer {
       div {
         text-align: center !important;
 
-        &:last-child {
-          a {
-            justify-content: center;
-          }
+        a {
+          justify-content: center !important;
         }
       }
     }
