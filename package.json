@@ -1,6 +1,6 @@
 {
   "name": "@grenadille/website",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Grenadille landing page",
   "repository": "git://github.com/grenadille/website.git",
   "license": "MIT",
