@@ -13,12 +13,13 @@ env:
   SFTP_PORT: ${{ secrets.SFTP_PORT }}
   SFTP_USER: ${{ secrets.SFTP_USER }}
   SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+  SFTP_REMOTE_PATH: '/home/${{ secrets.SFTP_USER }}/www'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout from tag
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Cache node modules
@@ -36,13 +37,12 @@ jobs:
         run: npm run build:dist
 
       - name: Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          server: ${{ env.SFTP_HOSTNAME }}
-          port: ${{ env.SFTP_PORT }}
-          username: ${{ env.SFTP_USER }}
-          password: ${{ env.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist
-          server-dir: www
-          dry-run: true
+            username: ${{ env.SFTP_USER }}
+            port: ${{ env.SFTP_PORT }}
+            server: ${{ env.SFTP_HOSTNAME }}
+            password: ${{ env.SFTP_PASSWORD }}
+            local_path: './dist/*'
+            remote_path: ${{ env.SFTP_REMOTE_PATH }}
+            sftp_only: true
