@@ -1,0 +1,48 @@
+name: Automatic deployment
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+
+# GLOBAL ENVIRONMENT VARIABLES
+env:
+  SFTP_HOSTNAME: ${{ secrets.SFTP_HOSTNAME }}
+  SFTP_PORT: ${{ secrets.SFTP_PORT }}
+  SFTP_USER: ${{ secrets.SFTP_USER }}
+  SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout from tag
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:dist
+
+      - name: Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ env.SFTP_HOSTNAME }}
+          port: ${{ env.SFTP_PORT }}
+          username: ${{ env.SFTP_USER }}
+          password: ${{ env.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist
+          server-dir: www
+          dry-run: true
