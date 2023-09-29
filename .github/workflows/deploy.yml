@@ -1,0 +1,48 @@
+name: Automatic deployment
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+
+# GLOBAL ENVIRONMENT VARIABLES
+env:
+  SFTP_HOSTNAME: ${{ secrets.SFTP_HOSTNAME }}
+  SFTP_PORT: ${{ secrets.SFTP_PORT }}
+  SFTP_USER: ${{ secrets.SFTP_USER }}
+  SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+  SFTP_REMOTE_PATH: '/home/${{ secrets.SFTP_USER }}/www'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:dist
+
+      - name: Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+            username: ${{ env.SFTP_USER }}
+            port: ${{ env.SFTP_PORT }}
+            server: ${{ env.SFTP_HOSTNAME }}
+            password: ${{ env.SFTP_PASSWORD }}
+            local_path: './dist/*'
+            remote_path: ${{ env.SFTP_REMOTE_PATH }}
+            sftp_only: true
