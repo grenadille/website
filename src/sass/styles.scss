@@ -104,16 +104,15 @@ a {
   margin: 4rem auto;
   width: 50%;
   max-width: 500px;
+  padding-bottom: 550px;
 
   &.primary {
-    background: $color-primary url(../assets/img/panel1.png) bottom no-repeat;
+    background: $color-primary url(../assets/img/panels/panel1.png) bottom no-repeat;
     background-size: contain;
-    padding-bottom: 400px;
   }
   &.secondary {
-    background: $color-secondary url(../assets/img/panel2.png) bottom no-repeat;
+    background: $color-secondary url(../assets/img/panels/panel2.png) bottom no-repeat;
     background-size: contain;
-    padding-bottom: 400px;
   }
 }
 
@@ -302,6 +301,7 @@ footer {
 @media (max-width: 768px) {
   .panel {
     width: 60%;
+    padding-bottom: 520px;
   }
 
   .team {
@@ -319,6 +319,7 @@ footer {
 
   .panel {
     width: 70%;
+    padding-bottom: 500px;
   }
 
   .legal-notices {
@@ -372,5 +373,6 @@ footer {
 
   .panel {
     width: 80%;
+    padding-bottom: 450px;
   }
 }
