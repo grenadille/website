@@ -17,6 +17,8 @@ body {
 header {
   .brand {
     transition: 1s;
+    max-width: 512px;
+    margin: 0 auto;
 
     h1 {
       @include title();
@@ -304,6 +306,14 @@ footer {
 }
 
 @media (max-width: 640px) {
+  header {
+    .brand {
+      img {
+        width: 80%;
+      }
+    }
+  }
+
   .container {
     padding: 0 1rem;
   }
@@ -354,14 +364,6 @@ footer {
 }
 
 @media (max-width: 512px) {
-  header {
-    .brand {
-      h1 {
-        font-size: $font-size-2xl;
-      }
-    }
-  }
-
   .panel {
     width: 80%;
     padding-bottom: 450px;
