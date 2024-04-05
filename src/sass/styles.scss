@@ -42,14 +42,6 @@ header {
         cursor: pointer;
         text-decoration: none;
       }
-
-      h1 {
-        color: $color-secondary;
-      }
-
-      h2 {
-        color: $color-primary;
-      }
     }
   }
 }
@@ -145,7 +137,7 @@ a {
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     max-width: 1000px;
     margin: 0 auto;
     padding: 4rem 0;
@@ -164,10 +156,6 @@ a {
         }
         &.aurelie {
           background: $color-black url(../assets/img/equipe/aurelie.png) no-repeat;
-          background-size: contain;
-        }
-        &.guillaume {
-          background: $color-black url(../assets/img/equipe/guillaume.png) no-repeat;
           background-size: contain;
         }
         &.vincent {
@@ -292,6 +280,9 @@ footer {
         }
         &.instagram::before {
           background: url("../assets/img/instagram.svg") no-repeat;
+        }
+        &.linkedin::before {
+          background: url("../assets/img/linkedin.svg") no-repeat;
         }
       }
     }
