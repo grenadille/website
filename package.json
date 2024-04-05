@@ -1,6 +1,6 @@
 {
   "name": "@grenadille/website",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Grenadille landing page",
   "repository": "git://github.com/grenadille/website.git",
   "license": "MIT",
@@ -27,7 +27,7 @@
   "scripts": {
     "start": "parcel 'src/*.html' --lazy --open",
     "build": "npm run build:clean && npm run build:dist",
-    "build:dist": "parcel build && cp -fv src/robots.txt src/favicon.ico dist/ && cp -fv src/assets/img/logo.png dist/logo-grenadille.png",
+    "build:dist": "parcel build && cp -fv src/robots.txt src/favicon.ico dist/ && cp -fv src/assets/img/icons/logo.png dist/logo-grenadille.png",
     "build:clean": "rm -Rf dist .parcel-cache"
   },
   "devDependencies": {
