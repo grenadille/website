@@ -1,0 +1,42 @@
+name: Automatic infra deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - feature/AM-46-docker-deploy
+    paths:
+      - docker/**
+      - .github/workflows/deploy-infra.yml
+
+# GLOBAL ENVIRONMENT VARIABLES
+env:
+  OCI_TENANCY_NS: axkiihq3lcps
+  OCI_REGISTRY: eu-paris-1.ocir.io
+  OCI_REPOSITORY: grenadille/website
+  OCI_AUTH_TOKEN: ${{ secrets.OCI_GITHUB_TOKEN }}
+  OCI_CLI_USER: ${{ secrets.OCI_GITHUB_OCID }}
+  OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
+  OCI_CLI_FINGERPRINT: ${{ secrets.OCI_GITHUB_PUBLIC_KEY_FINGERPRINT }}
+  OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_GITHUB_PRIVATE_KEY }}
+  OCI_CLI_REGION: eu-paris-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log into OCIR
+        uses: oracle-actions/login-ocir@v1.2.1
+        with:
+          auth_token: ${{ env.OCI_AUTH_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: docker
+          push: true
+          tags: ${{ env.OCI_REGISTRY }}/${{ env.OCI_TENANCY_NS }}/${{ env.OCI_REPOSITORY }}:latest

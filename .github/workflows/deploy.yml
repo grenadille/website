@@ -6,21 +6,23 @@ on:
     tags:
       - '*'
 
-
 # GLOBAL ENVIRONMENT VARIABLES
 env:
-  SFTP_HOSTNAME: ${{ secrets.SFTP_HOSTNAME }}
-  SFTP_PORT: ${{ secrets.SFTP_PORT }}
-  SFTP_USER: ${{ secrets.SFTP_USER }}
-  SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
-  SFTP_REMOTE_PATH: '/home/${{ secrets.SFTP_USER }}/www'
+  OCI_TENANCY_NS: axkiihq3lcps
+  OCI_BUCKET_NAME: website
+  OCI_CLI_AUTH: api_key
+  OCI_CLI_USER: ${{ secrets.OCI_GITHUB_OCID }}
+  OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
+  OCI_CLI_FINGERPRINT: ${{ secrets.OCI_GITHUB_PUBLIC_KEY_FINGERPRINT }}
+  OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_GITHUB_PRIVATE_KEY }}
+  OCI_CLI_REGION: eu-paris-1
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -36,13 +38,7 @@ jobs:
       - name: Build
         run: npm run build:dist
 
-      - name: Deploy
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: Deploy files to OCI Object Storage
+        uses: oracle-actions/run-oci-cli-command@v1.1.1
         with:
-            username: ${{ env.SFTP_USER }}
-            port: ${{ env.SFTP_PORT }}
-            server: ${{ env.SFTP_HOSTNAME }}
-            password: ${{ env.SFTP_PASSWORD }}
-            local_path: './dist/*'
-            remote_path: ${{ env.SFTP_REMOTE_PATH }}
-            sftp_only: true
+          command: 'os object bulk-upload --namespace ${{ env.OCI_TENANCY_NS }} --bucket-name ${{ env.OCI_BUCKET_NAME }} --src-dir dist'
