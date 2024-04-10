@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - master
-      - feature/AM-46-docker-deploy
     paths:
       - docker/**
       - .github/workflows/deploy-infra.yml
@@ -15,12 +14,8 @@ env:
   OCI_TENANCY_NS: axkiihq3lcps
   OCI_REGISTRY: eu-paris-1.ocir.io
   OCI_REPOSITORY: grenadille/website
-  OCI_AUTH_TOKEN: ${{ secrets.OCI_GITHUB_TOKEN }}
-  OCI_CLI_USER: ${{ secrets.OCI_GITHUB_OCID }}
-  OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
-  OCI_CLI_FINGERPRINT: ${{ secrets.OCI_GITHUB_PUBLIC_KEY_FINGERPRINT }}
-  OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_GITHUB_PRIVATE_KEY }}
-  OCI_CLI_REGION: eu-paris-1
+  OCI_GITHUB_USERNAME: ${{ secrets.OCI_GITHUB_USERNAME }}
+  OCI_GITHUB_PASSWORD: ${{ secrets.OCI_GITHUB_PASSWORD }}
 
 jobs:
   deploy:
@@ -29,10 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Log into OCIR
-        uses: oracle-actions/login-ocir@v1.2.1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to OCIR
+        uses: docker/login-action@v3
         with:
-          auth_token: ${{ env.OCI_AUTH_TOKEN }}
+          registry: ${{ env.OCI_REGISTRY }}
+          username: ${{ env.OCI_TENANCY_NS }}/${{ env.OCI_GITHUB_USERNAME }}
+          password: ${{ env.OCI_GITHUB_PASSWORD }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
