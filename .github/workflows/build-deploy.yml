@@ -1,10 +1,11 @@
-name: Automatic infra deployment
+name: Automatic build and deployment
 
 on:
   workflow_dispatch:
   push:
+    tags:
+      - '*'
     branches:
-      - master
       - feature/AM-46-docker-deploy
     paths:
       - docker/**
@@ -17,16 +18,14 @@ env:
   OCI_REPOSITORY: grenadille/website
   OCI_GITHUB_USERNAME: ${{ secrets.OCI_GITHUB_USERNAME }}
   OCI_GITHUB_PASSWORD: ${{ secrets.OCI_GITHUB_PASSWORD }}
+  DOCKERFILE: docker/Dockerfile
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Login to OCIR
         uses: docker/login-action@v3
@@ -35,9 +34,17 @@ jobs:
           username: ${{ env.OCI_TENANCY_NS }}/${{ env.OCI_GITHUB_USERNAME }}
           password: ${{ env.OCI_GITHUB_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: docker
-          push: true
-          tags: ${{ env.OCI_REGISTRY }}/${{ env.OCI_TENANCY_NS }}/${{ env.OCI_REPOSITORY }}:latest
+      - name: Set variables
+        run: |
+          echo "REPOSITORY=${{ env.OCI_REGISTRY }}/${{ env.OCI_TENANCY_NS }}/${{ env.OCI_REPOSITORY }}" >> $GITHUB_ENV
+
+      - name: Build and push Docker image with latest tag
+        run: |
+          DOCKER_BUILDKIT=1 docker build -f ${{ env.DOCKERFILE }} -t ${{ env.REPOSITORY }}:latest .
+          docker push ${{ env.REPOSITORY }}:latest
+
+      - name: Add version tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          docker tag ${{ env.REPOSITORY }}:latest ${{ env.REPOSITORY }}:${GITHUB_REF#refs/tags/}
+          docker push ${{ env.REPOSITORY }}:${GITHUB_REF#refs/tags/}
