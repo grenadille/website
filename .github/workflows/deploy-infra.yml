@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - feature/AM-46-docker-deploy
     paths:
       - docker/**
       - .github/workflows/deploy-infra.yml
