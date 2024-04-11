@@ -1,18 +1,18 @@
-name: Automatic build and deployment
+name: Automatic deployments
 
 on:
   workflow_dispatch:
   push:
     tags:
       - '*'
-    branches:
-      - feature/AM-46-docker-deploy
-    paths:
-      - docker/**
-      - .github/workflows/deploy-infra.yml
 
 # GLOBAL ENVIRONMENT VARIABLES
 env:
+  SFTP_HOSTNAME: ${{ secrets.SFTP_HOSTNAME }}
+  SFTP_PORT: ${{ secrets.SFTP_PORT }}
+  SFTP_USER: ${{ secrets.SFTP_USER }}
+  SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+  SFTP_REMOTE_PATH: '/home/${{ secrets.SFTP_USER }}/www'
   OCI_TENANCY_NS: axkiihq3lcps
   OCI_REGISTRY: eu-paris-1.ocir.io
   OCI_REPOSITORY: grenadille/website
@@ -21,7 +21,38 @@ env:
   DOCKERFILE: docker/Dockerfile
 
 jobs:
-  build-deploy:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:dist
+
+      - name: Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ env.SFTP_USER }}
+          port: ${{ env.SFTP_PORT }}
+          server: ${{ env.SFTP_HOSTNAME }}
+          password: ${{ env.SFTP_PASSWORD }}
+          local_path: './dist/*'
+          remote_path: ${{ env.SFTP_REMOTE_PATH }}
+          sftp_only: true
+
+  deploy-oci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
