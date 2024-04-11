@@ -2,10 +2,8 @@ User-agent: *
 Disallow: /
 # Assets
 Allow: /site.webmanifest$
-Allow: /*.ico$
-Allow: /*.css$
-Allow: /*.png$
-Allow: /*.svg$
+Allow: /favicon.ico$
+Allow: /logo-grenadille.png$
 # Home
 Allow: /$
 Allow: /index.html$
